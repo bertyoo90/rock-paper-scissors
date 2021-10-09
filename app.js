@@ -5,11 +5,11 @@ const computerPlay = (function(){
      const gameChoice = Math.floor(Math.random() * gameOptions.length);
      
      return(gameChoice, gameOptions[gameChoice]);
-}) 
+})() 
 
 
 //IIFE that holds objects of the game
-let gameObjects = (function(){
+let gameObj = (function(){
 
       //Selects the buttons rock, paper, scissors, or reset
       const selection = {
@@ -22,6 +22,12 @@ let gameObjects = (function(){
       //new div under results
       const results = document.querySelector("#results");
 
+      //Text that announces if player/computer has won
+      const winText = {
+          playerWin: document.createElement('h2'),
+          computerWin: document.createElement('h2')
+      }
+      
      //winner object
       const winner = {
           playerWinner: document.getElementById("winner"),
@@ -51,7 +57,8 @@ let gameObjects = (function(){
           winner,
           score,
           gameScore,
-          roundResult
+          roundResult,
+          winText
       }
 }) 
 
@@ -62,7 +69,7 @@ let gameObjects = (function(){
 //Announces the winner of first to 5 round wins
 const winner = (function(){
      const winnerAnnouncement = () => {
-          if(computerScore == winningScore) {
+          if(gameObj.gameScore.computerScore == gameObj.gameScore.winningScore) {
                  computerWin.textContent = 'Computer has reached 5 points, computer wins!'
             }else if(playerScore == winningScore) {
                  playerWin.textContent = 'You have reached 5 points, you win!'
@@ -71,8 +78,8 @@ const winner = (function(){
                  console.log()
             }
                
-            playerWinner.appendChild(playerWin);
-            computerWinner.appendChild(computerWin);
+            gameObj.winner.playerWinner.appendChild(playerWin);
+            gameObj.winner.computerWinner.appendChild(computerWin);
         }
 
      return {winnerAnnouncement}
@@ -81,10 +88,10 @@ const winner = (function(){
 //Functionality for 'rock' selection
 let rock = (function(){
      
-     rock.addEventListener('click', function() {
+     gameObj.selection.rock.addEventListener('click', function() {
     
           const computerChoice = computerPlay();
-          if(!isGameOver){
+          if(!gameObj.gameScore.isGameOver){
             if(computerChoice === 'paper') {
                roundResult.textContent = `You have chosen rock and the computer has chosen paper. Computer wins!` ;
                computerScore += 1;
